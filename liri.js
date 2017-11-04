@@ -2,22 +2,27 @@ var fs = require('fs');
 var request = require('request');
 var keys = require('./keys.js');
 var Twitter = require('twitter');
-var spotify = require('spotify');
+var client = new Twitter(keys.twitterKeys);
+var params = {
+    screen_name: 'LiriLirison',
+    count: 20
+    };
+var spotify = require('node-spotify-api');
+var spotifyClient = new spotify ({
+  id: '6d07e01e4a9441ad90e2b4deee3e77f7',
+  secret: '5e06a076b0a24595a9c238491181ff49',
+});
 var omdb = require('omdb');
-var input1 = process.argv[2];
-var input2 = process.argv.splice(3).join(" ");
+var arg = process.argv[2];
+var arg2 = process.argv.splice(3).join(" ");
 
 liri();
 
 function liri() {
 
-var client = new Twitter(keys.twitterKeys);
-var params = {
-    screen_name: 'LiriLirison',
-    count: 20
-};
 
-    if (input1 === "my-tweets") {
+
+    if (arg === "my-tweets") {
         client.get('statuses/user_timeline', params, function(error, tweets, response) {
             if (!error) {
                 console.log('');
@@ -35,15 +40,14 @@ var params = {
         });
 
 
-    } else if (input1 === "spotify-this-song") {
-        if (input2.length < 1) {
-            input2 = "Ace of Base The Sign";
+    } else if (arg === "spotify-this-song") {
+        if (arg2.length < 1) {
+            arg2 = "Ace of Base The Sign";
         };
 
-    spotify.search({ type: 'track', query: input2 }, function(err, data) {
+    spotifyClient.search({ type: 'track', query: arg2 }, function(err, data) {
         if (err) {
-            console.log('Error occurred: ' + err);
-            return;
+            return console.log('Error occurred: ' + err);
         }
             console.log('');
             console.log('Spotify Song Information Results: ');
@@ -56,12 +60,12 @@ var params = {
         });
 
 
-    } else if (input1 === "movie-this") {
-        if (input2.length < 1) {
-                input2 = "Mr. Nobody";
+    } else if (arg === "movie-this") {
+        if (arg2.length < 1) {
+                arg2 = "Mr. Nobody";
         };
 
-        request("http://www.omdbapi.com/?t=" + input2 + "&y=&plot=short&r=json&tomatoes=true", function(error, response, body) {
+        request("http://www.omdbapi.com/?apikey=40e9cece&?t=" + arg2 + "&y=&plot=short&r=json&tomatoes=true", function(error, response, body) {
             if (!error && response.statusCode === 200) {
 
                 console.log('');
@@ -74,8 +78,6 @@ var params = {
                 console.log("Language: " + JSON.parse(body).Language);
                 console.log("Movie Plot: " + JSON.parse(body).Plot);
                 console.log("Actor(s): " + JSON.parse(body).Actors);
-                console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value);
-                console.log("Rotten Tomatoes URL: " + JSON.parse(body).tomatoURL);
                 console.log('--------------------------');
             } else {
 
@@ -84,7 +86,7 @@ var params = {
         });
 
 
-    } else if (input1 === "do-what-it-says") {
+    } else if (arg === "do-what-it-says") {
 
         fs.readFile('random.txt', 'utf8', function(err, data) {
             if (err) throw err;
@@ -92,8 +94,8 @@ var params = {
 
             var arr = data.split(',');
 
-            input1 = arr[0].trim();
-            input2 = arr[1].trim();
+            arg = arr[0].trim();
+            arg2 = arr[1].trim();
             liri();
         });
     }
