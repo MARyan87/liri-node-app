@@ -19,10 +19,3 @@
     "type": "git",
     "url": "git+https://github.com/jasondpeck/liri-node-app.git"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jasondpeck/liri-node-app/issues"
-  },
-  "homepage": "https://github.com/jasondpeck/liri-node-app#readme"
-}

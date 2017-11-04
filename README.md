@@ -1,1 +1,1 @@
-# liri-node-app
+Please install all node packages as described in 'dependencies' in package.json before running liri.js
