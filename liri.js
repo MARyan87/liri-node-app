@@ -65,7 +65,7 @@ function liri() {
                 arg2 = "Mr. Nobody";
         };
 
-        request("http://www.omdbapi.com/?apikey=40e9cece&?t=" + arg2 + "&y=&plot=short&r=json&tomatoes=true", function(error, response, body) {
+        request("http://www.omdbapi.com/?t=" + arg2 + "&y=&plot=short&r=json&tomatoes=true&apikey=40e9cece", function(error, response, body) {
             if (!error && response.statusCode === 200) {
 
                 console.log('');
